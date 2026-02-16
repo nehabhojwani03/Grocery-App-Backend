@@ -454,6 +454,7 @@ exports.updateProfile = async (req, res) => {
     const fieldsToUpdate = {
       name: req.body.name,
       email: req.body.email,
+      phone: req.body.phone, 
     };
 
     const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
