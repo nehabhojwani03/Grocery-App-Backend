@@ -1,6 +1,12 @@
 const express = require('express');
+const router = express.Router();
+
+// ✅ Correct import paths matching your file structure
+const { protect, authorize } = require('../middleware/auth');
+
 const {
   getDeliveries,
+  getMyDeliveries,
   getDelivery,
   getDeliveryByOrder,
   trackDelivery,
@@ -11,26 +17,38 @@ const {
   updateProofOfDelivery,
   rateDelivery,
   getDeliveryStats,
-} = require('../controllers/deliveryController');
+} = require('../controller/Deliverycontroller');
 
-const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
-
-// Public routes
+// ============================================
+// PUBLIC
+// ============================================
 router.get('/track/:trackingNumber', trackDelivery);
 
-// Private routes
-router.get('/:id', protect, getDelivery);
+// ============================================
+// PRIVATE (all logged-in roles)
+// ============================================
 router.get('/order/:orderId', protect, getDeliveryByOrder);
-router.put('/:id/rate', protect, rateDelivery);
+router.get('/:id', protect, getDelivery);
+router.put('/:id/rate', protect, authorize('user'), rateDelivery);
 
-// Admin routes
+// ============================================
+// DRIVER ROUTES
+// ============================================
+
+// Driver sees only their own deliveries
+router.get('/my-deliveries', protect, authorize('driver'), getMyDeliveries);
+
+// Driver updates status/location/proof on their assigned delivery
+router.put('/:id/status', protect, authorize('admin', 'driver'), updateDeliveryStatus);
+router.put('/:id/location', protect, authorize('admin', 'driver'), updateLocation);
+router.put('/:id/proof', protect, authorize('admin', 'driver'), updateProofOfDelivery);
+
+// ============================================
+// ADMIN ROUTES
+// ============================================
+router.get('/stats', protect, authorize('admin'), getDeliveryStats);
 router.get('/', protect, authorize('admin'), getDeliveries);
 router.post('/', protect, authorize('admin'), createDelivery);
-router.put('/:id/status', protect, authorize('admin'), updateDeliveryStatus);
-router.put('/:id/location', protect, authorize('admin'), updateLocation);
 router.put('/:id/assign', protect, authorize('admin'), assignDeliveryBoy);
-router.put('/:id/proof', protect, authorize('admin'), updateProofOfDelivery);
-router.get('/stats', protect, authorize('admin'), getDeliveryStats);
 
 module.exports = router;

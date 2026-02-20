@@ -1,15 +1,12 @@
-// ============================================
-// authRoutes.js - Authentication Routes
-// ============================================
 const express = require('express');
 const router = express.Router();
 
-// Import all controller functions and middleware
 const {
   // Middleware
   auth,
   isAdmin,
-  
+  isDriver,
+
   // Public routes
   register,
   login,
@@ -19,7 +16,7 @@ const {
   verifyEmail,
   resendVerificationEmail,
   checkEmailExists,
-  
+
   // Protected routes
   getMe,
   getCurrentUser,
@@ -32,14 +29,21 @@ const {
   enable2FA,
   verify2FA,
   disable2FA,
-  
+
   // Social auth
   googleAuth,
   facebookAuth,
   appleAuth,
-  
+
+  // Driver routes
+  registerDriver,
+  toggleDriverAvailability,
+  updateDriverLocation,
+
   // Admin routes
   getAllUsers,
+  getAllDrivers,
+  getAvailableDrivers,
   getUserById,
   updateUserRole,
   toggleUserStatus,
@@ -47,103 +51,72 @@ const {
 } = require('../controller/auth');
 
 // ============================================
-// PUBLIC ROUTES (No Authentication Required)
+// PUBLIC ROUTES
 // ============================================
 
-// User Registration - POST /api/v1/auth/register
 router.post('/register', register);
-
-// User Login - POST /api/v1/auth/login
 router.post('/login', login);
-
-router.put('/update-fcm-token', auth, updateFCMToken);
-
-
-// Forgot Password - Send Reset Link - POST /api/v1/auth/forgot-password
 router.post('/forgot-password', forgotPassword);
-
-// Reset Password - With Token (supports both routes for flexibility)
-// POST /api/v1/auth/reset-password/:token (with token in URL)
 router.post('/reset-password/:token', resetPassword);
-// POST /api/v1/auth/reset-password (with token in body)
 router.post('/reset-password', resetPassword);
-
-// Verify Email - Email Verification Link - GET /api/v1/auth/verify-email/:token
 router.get('/verify-email/:token', verifyEmail);
-
-// Resend Verification Email - POST /api/v1/auth/resend-verification
 router.post('/resend-verification', resendVerificationEmail);
-
-// Check if Email Exists - POST /api/v1/auth/check-email
 router.post('/check-email', checkEmailExists);
 
-// ============================================
-// PROTECTED ROUTES (Authentication Required)
-// ============================================
-
-// Get Current User Profile - GET /api/v1/auth/me
-router.get('/me', auth, getMe);
-
-// Alternative route for getting current user
-router.get('/current-user', auth, getCurrentUser);
-
-// Update User Profile - PUT /api/v1/auth/update-profile
-router.put('/update-profile', auth, updateProfile);
-
-// Change Password (When Logged In) - PUT /api/v1/auth/change-password
-router.put('/change-password', auth, changePassword);
-
-// Logout (Optional - for token blacklisting) - POST /api/v1/auth/logout
-router.post('/logout', auth, logout);
-
-// Refresh Access Token - POST /api/v1/auth/refresh-token
-router.post('/refresh-token', refreshToken);
-
-// Delete Account - DELETE /api/v1/auth/delete-account
-router.delete('/delete-account', auth, deleteAccount);
-
-// Update Profile Picture - PUT /api/v1/auth/update-avatar
-router.put('/update-avatar', auth, updateAvatar);
-
-// Enable Two-Factor Authentication - POST /api/v1/auth/enable-2fa
-router.post('/enable-2fa', auth, enable2FA);
-
-// Verify Two-Factor Authentication - POST /api/v1/auth/verify-2fa
-router.post('/verify-2fa', auth, verify2FA);
-
-// Disable Two-Factor Authentication - POST /api/v1/auth/disable-2fa
-router.post('/disable-2fa', auth, disable2FA);
-
-// ============================================
-// SOCIAL AUTH ROUTES (Optional)
-// ============================================
-
-// Google OAuth Login - POST /api/v1/auth/google
+// Social Auth
 router.post('/google', googleAuth);
-
-// Facebook OAuth Login - POST /api/v1/auth/facebook
 router.post('/facebook', facebookAuth);
-
-// Apple OAuth Login - POST /api/v1/auth/apple
 router.post('/apple', appleAuth);
 
 // ============================================
-// ADMIN ROUTES (Admin Only)
+// PROTECTED ROUTES (All roles)
 // ============================================
 
-// Get All Users (Admin) - GET /api/v1/auth/users
+router.get('/me', auth, getMe);
+router.get('/current-user', auth, getCurrentUser);
+router.put('/update-profile', auth, updateProfile);
+router.put('/change-password', auth, changePassword);
+router.post('/logout', auth, logout);
+router.post('/refresh-token', refreshToken);
+router.delete('/delete-account', auth, deleteAccount);
+router.put('/update-avatar', auth, updateAvatar);
+router.put('/update-fcm-token', auth, updateFCMToken);
+
+// 2FA
+router.post('/enable-2fa', auth, enable2FA);
+router.post('/verify-2fa', auth, verify2FA);
+router.post('/disable-2fa', auth, disable2FA);
+
+// ============================================
+// DRIVER ROUTES
+// ============================================
+
+// Toggle online/offline status
+router.put('/driver/availability', auth, isDriver, toggleDriverAvailability);
+
+// Update live GPS location
+router.put('/driver/location', auth, isDriver, updateDriverLocation);
+
+// ============================================
+// ADMIN ROUTES
+// ============================================
+
+// Create a driver account (admin only)
+router.post('/register-driver', auth, isAdmin, registerDriver);
+
+// Get all regular users
 router.get('/users', auth, isAdmin, getAllUsers);
 
-// Get User By ID (Admin) - GET /api/v1/auth/users/:id
+// Get all drivers
+router.get('/drivers', auth, isAdmin, getAllDrivers);
+
+// Get only available (online) drivers
+router.get('/drivers/available', auth, isAdmin, getAvailableDrivers);
+
+// Single user/driver management
 router.get('/users/:id', auth, isAdmin, getUserById);
-
-// Update User Role (Admin) - PUT /api/v1/auth/users/:id/role
 router.put('/users/:id/role', auth, isAdmin, updateUserRole);
-
-// Block/Unblock User (Admin) - PUT /api/v1/auth/users/:id/toggle-status
 router.put('/users/:id/toggle-status', auth, isAdmin, toggleUserStatus);
-
-// Delete User (Admin) - DELETE /api/v1/auth/users/:id
 router.delete('/users/:id', auth, isAdmin, deleteUser);
 
 module.exports = router;

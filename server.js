@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const auth = require('./routes/authRoutes');
+const deliveries = require('./routes/Deliveryroutes');
 
 // Load env vars
 dotenv.config();
@@ -28,7 +29,7 @@ app.use(
 
 // Mount routers
 app.use('/api/v1/auth', auth);
-
+app.use('/api/v1/deliveries', deliveries);
 // Root route
 app.get('/', (req, res) => {
   res.json({
