@@ -108,10 +108,8 @@ router.post('/register-driver', auth, isAdmin, registerDriver);
 router.get('/users', auth, isAdmin, getAllUsers);
 
 // Get all drivers
-router.get('/drivers', auth, isAdmin, getAllDrivers);
-
-// Get only available (online) drivers
 router.get('/drivers/available', auth, isAdmin, getAvailableDrivers);
+router.get('/drivers', auth, isAdmin, getAllDrivers);
 
 // Single user/driver management
 router.get('/users/:id', auth, isAdmin, getUserById);

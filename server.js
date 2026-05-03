@@ -5,6 +5,19 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const auth = require('./routes/authRoutes');
 const deliveries = require('./routes/Deliveryroutes');
+// const categories = require('./routes/Categoryroutes'); 
+// const products   = require('./routes/Productroutes');
+// const cart       = require('./routes/Cartroutes');
+// const orders     = require('./routes/Orderroutes');
+const coupons    = require('./routes/Couponroutes');
+const addresses  = require('./routes/Addressroutes');
+const wishlist   = require('./routes/Wishlistroutes');
+const notifications = require('./routes/Notificationroutes');
+const banners    = require('./routes/Bannerroutes');
+const payments   = require('./routes/Paymentroutes');
+const stores     = require('./routes/Storeroutes');
+const inventory  = require('./routes/Inventoryroutes');
+const reviews    = require('./routes/Reviewroutes');
 
 // Load env vars
 dotenv.config();
@@ -30,6 +43,19 @@ app.use(
 // Mount routers
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/deliveries', deliveries);
+// app.use('/api/v1/categories', categories);
+// app.use('/api/v1/products', products);
+// app.use('/api/v1/cart', cart);
+// app.use('/api/v1/orders', orders);
+app.use('/api/v1/coupons', coupons);
+app.use('/api/v1/addresses', addresses);
+app.use('/api/v1/wishlist', wishlist);
+app.use('/api/v1/notifications', notifications);
+app.use('/api/v1/banners', banners);
+app.use('/api/v1/payments', payments);
+app.use('/api/v1/stores', stores);
+app.use('/api/v1/inventory', inventory);
+app.use('/api/v1/reviews', reviews);
 // Root route
 app.get('/', (req, res) => {
   res.json({

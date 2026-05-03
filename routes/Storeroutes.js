@@ -15,10 +15,10 @@ const {
   removeServiceableArea,
   checkIfOpen,
   getStoreStats,
-} = require('../controllers/storeController');
+} = require('../controller/storeController');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Public routes
 router.get('/', getStores);

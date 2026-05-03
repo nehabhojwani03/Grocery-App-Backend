@@ -1,4 +1,4 @@
-const Payment = require('../models/Payment');
+const Payment = require('../models/paymentSchema');
 const Order = require('../models/Order');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');

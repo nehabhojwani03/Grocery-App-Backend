@@ -10,10 +10,10 @@ const {
   deleteNotification,
   deleteAllNotifications,
   getNotificationStats,
-} = require('../controllers/notificationController');
+} = require('../controller/Notificationcontroller');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Private routes
 router.get('/', protect, getNotifications);

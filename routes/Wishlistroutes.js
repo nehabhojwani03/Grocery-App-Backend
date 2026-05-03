@@ -7,10 +7,10 @@ const {
   checkWishlist,
   moveToCart,
   getWishlistStats,
-} = require('../controllers/wishlistController');
+} = require('../controller/Wishlistcontroller');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Private routes
 router.get('/', protect, getWishlist);

@@ -1,4 +1,4 @@
-const Store = require('../models/Store');
+const Store = require('../models/storeSchema');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 

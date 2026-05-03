@@ -1,4 +1,4 @@
-const Notification = require('../models/Notification');
+const Notification = require('../models/notificationSchema');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 

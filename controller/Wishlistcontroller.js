@@ -1,4 +1,4 @@
-const Wishlist = require('../models/Wishlist');
+const Wishlist = require('../models/wishlistSchema');
 const Product = require('../models/Product');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');

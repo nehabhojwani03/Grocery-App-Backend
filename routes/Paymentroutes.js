@@ -12,10 +12,10 @@ const {
   verifyPayment,
   getPaymentStats,
   getPaymentAnalytics,
-} = require('../controllers/paymentController');
+} = require('../controller/paymentController');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Public routes
 router.post('/verify', verifyPayment);

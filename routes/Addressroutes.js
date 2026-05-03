@@ -8,10 +8,10 @@ const {
   setDefaultAddress,
   deleteAddress,
   getAddressesByPincode,
-} = require('../controllers/addressController');
+} = require('../controller/Addresscontroller');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Private routes
 router.get('/', protect, getAddresses);

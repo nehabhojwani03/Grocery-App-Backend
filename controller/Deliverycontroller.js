@@ -1,5 +1,5 @@
 const Delivery = require('../models/deliverySchema');
-const Order = require('../models/orderSchema');
+const Order = require('../models/Order');
 const User = require('../models/user');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');

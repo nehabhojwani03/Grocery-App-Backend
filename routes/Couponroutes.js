@@ -8,10 +8,10 @@ const {
   updateCoupon,
   deleteCoupon,
   getCouponStats,
-} = require('../controllers/couponController');
+} = require('../controller/Couponcontroller');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Public routes
 router.get('/', getCoupons);

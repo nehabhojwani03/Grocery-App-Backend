@@ -11,10 +11,10 @@ const {
   toggleActive,
   getBannerAnalytics,
   getTopBanners,
-} = require('../controllers/bannerController');
+} = require('../controller/bannerController');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Public routes
 router.get('/', getBanners);

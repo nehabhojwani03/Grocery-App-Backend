@@ -17,10 +17,10 @@ const {
   getReorderAlerts,
   getInventoryStats,
   getStockHistory,
-} = require('../controllers/inventoryController');
+} = require('../controller/inventoryController');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Public routes
 router.get('/check-stock', checkStock);

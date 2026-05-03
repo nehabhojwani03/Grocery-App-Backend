@@ -1,9 +1,9 @@
 const Inventory = require('../models/Inventory');
 const Product = require('../models/Product');
-const Store = require('../models/Store');
+const Store = require('../models/storeSchema');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
-
+2
 // @desc    Get all inventory (Admin)
 // @route   GET /api/v1/inventory
 // @access  Private/Admin

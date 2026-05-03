@@ -18,10 +18,10 @@ const {
   featureReview,
   reportReview,
   getReviewStats,
-} = require('../controllers/reviewController');
+} = require('../controller/reviewController');
 
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/auth');
 
 // Public routes
 router.get('/product/:productId', getProductReviews);

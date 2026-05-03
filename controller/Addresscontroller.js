@@ -1,4 +1,4 @@
-const Address = require('../models/Address');
+const Address = require('../models/addressSchema');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 

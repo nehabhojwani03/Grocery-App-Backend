@@ -1,4 +1,4 @@
-const Banner = require('../models/Banner');
+const Banner = require('../models/bannerSchema');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 
