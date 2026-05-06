@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const auth = require('./routes/authRoutes');
 const deliveries = require('./routes/Deliveryroutes');
+const cart= require('./routes/Cartroutes');
 // const categories = require('./routes/Categoryroutes'); 
 // const products   = require('./routes/Productroutes');
 // const cart       = require('./routes/Cartroutes');
@@ -43,6 +44,7 @@ app.use(
 // Mount routers
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/deliveries', deliveries);
+app.use('/api/v1/cart', cart);
 // app.use('/api/v1/categories', categories);
 // app.use('/api/v1/products', products);
 // app.use('/api/v1/cart', cart);
