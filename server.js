@@ -9,7 +9,7 @@ const cart= require('./routes/Cartroutes');
 // const categories = require('./routes/Categoryroutes'); 
 // const products   = require('./routes/Productroutes');
 // const cart       = require('./routes/Cartroutes');
-// const orders     = require('./routes/Orderroutes');
+const orders     = require('./routes/Orderroutes');
 const coupons    = require('./routes/Couponroutes');
 const addresses  = require('./routes/Addressroutes');
 const wishlist   = require('./routes/Wishlistroutes');
@@ -19,6 +19,7 @@ const payments   = require('./routes/Paymentroutes');
 const stores     = require('./routes/Storeroutes');
 const inventory  = require('./routes/Inventoryroutes');
 const reviews    = require('./routes/Reviewroutes');
+const productRoutes = require('./routes/productRoutes');
 
 // Load env vars
 dotenv.config();
@@ -48,7 +49,7 @@ app.use('/api/v1/cart', cart);
 // app.use('/api/v1/categories', categories);
 // app.use('/api/v1/products', products);
 // app.use('/api/v1/cart', cart);
-// app.use('/api/v1/orders', orders);
+app.use('/api/v1/orders', orders);
 app.use('/api/v1/coupons', coupons);
 app.use('/api/v1/addresses', addresses);
 app.use('/api/v1/wishlist', wishlist);
@@ -58,6 +59,7 @@ app.use('/api/v1/payments', payments);
 app.use('/api/v1/stores', stores);
 app.use('/api/v1/inventory', inventory);
 app.use('/api/v1/reviews', reviews);
+app.use('/api/v1/products', productRoutes);
 // Root route
 app.get('/', (req, res) => {
   res.json({

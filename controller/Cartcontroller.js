@@ -28,13 +28,11 @@ exports.getCart = asyncHandler(async (req, res, next) => {
 exports.addToCart = asyncHandler(async (req, res, next) => {
   const { productId, quantity } = req.body;
 
-  // Check if product exists
   const product = await Product.findById(productId);
   if (!product) {
     return next(new ErrorResponse('Product not found', 404));
   }
 
-  // Check stock
   if (product.stock < quantity) {
     return next(new ErrorResponse('Not enough stock', 400));
   }
@@ -45,19 +43,24 @@ exports.addToCart = asyncHandler(async (req, res, next) => {
     cart = await Cart.create({ user: req.user.id, items: [] });
   }
 
-  // Check if product already in cart
   const existingItem = cart.items.find(
     (item) => item.product.toString() === productId
   );
 
   if (existingItem) {
-    existingItem.quantity += quantity;
+    await Cart.findOneAndUpdate(
+      { user: req.user.id, 'items.product': productId },
+      { $inc: { 'items.$.quantity': quantity } },
+      { new: true }
+    );
   } else {
     const price = product.discountPrice > 0 ? product.discountPrice : product.price;
-    cart.items.push({ product: productId, quantity, price });
+    await Cart.findOneAndUpdate(
+      { user: req.user.id },
+      { $push: { items: { product: productId, quantity, price } } },
+      { new: true }
+    );
   }
-
-  await cart.save();
 
   cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'items.product',
@@ -88,8 +91,11 @@ exports.updateCartItem = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Item not found in cart', 404));
   }
 
-  item.quantity = quantity;
-  await cart.save();
+  await Cart.findOneAndUpdate(
+    { user: req.user.id, 'items._id': req.params.itemId },
+    { $set: { 'items.$.quantity': quantity } },
+    { new: true }
+  );
 
   const updatedCart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'items.product',
@@ -112,11 +118,11 @@ exports.removeFromCart = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Cart not found', 404));
   }
 
-  cart.items = cart.items.filter(
-    (item) => item._id.toString() !== req.params.itemId
+  await Cart.findOneAndUpdate(
+    { user: req.user.id },
+    { $pull: { items: { _id: req.params.itemId } } },
+    { new: true }
   );
-
-  await cart.save();
 
   const updatedCart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'items.product',
@@ -139,11 +145,16 @@ exports.clearCart = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Cart not found', 404));
   }
 
-  cart.items = [];
-  await cart.save();
+  await Cart.findOneAndUpdate(
+    { user: req.user.id },
+    { $set: { items: [] } },
+    { new: true }
+  );
+
+  const updatedCart = await Cart.findOne({ user: req.user.id });
 
   res.status(200).json({
     success: true,
-    data: cart,
+    data: updatedCart,
   });
 });

@@ -71,7 +71,9 @@ exports.getOrderById = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/orders/myorders
 // @access  Private
 exports.getMyOrders = asyncHandler(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user.id }).sort('-createdAt');
+  const orders = await Order.find({ user: req.user.id })
+    .populate('orderItems.product', 'name price')
+    .sort('-createdAt');
 
   res.status(200).json({
     success: true,
