@@ -9,7 +9,7 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.getCart = asyncHandler(async (req, res, next) => {
   let cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'items.product',
-    select: 'name price discountPrice images stock',
+    select: 'name price discountPrice images stock productKey unit',
   });
 
   if (!cart) {

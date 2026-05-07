@@ -6,10 +6,38 @@ const OrderItemSchema = new mongoose.Schema({
     ref: 'Product',
     required: true,
   },
-  name: { type: String, required: true },
-  quantity: { type: Number, required: true },
-  price: { type: Number, required: true },
-  image: { type: String, default: '' },
+
+  productKey: {
+    type: String,
+  },
+
+  name: {
+    type: String,
+    required: true,
+  },
+
+  quantity: {
+    type: Number,
+    required: true,
+  },
+
+  price: {
+    type: Number,
+    required: true,
+  },
+
+  unit: {
+    type: String,
+  },
+
+  category: {
+    type: String,
+  },
+
+  image: {
+    type: String,
+    default: '',
+  },
 });
 
 const OrderSchema = new mongoose.Schema(

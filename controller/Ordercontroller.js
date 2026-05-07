@@ -72,9 +72,8 @@ exports.getOrderById = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.getMyOrders = asyncHandler(async (req, res, next) => {
   const orders = await Order.find({ user: req.user.id })
-    .populate('orderItems.product', 'name price')
+    .populate('orderItems.product', 'name price productKey') 
     .sort('-createdAt');
-
   res.status(200).json({
     success: true,
     count: orders.length,
